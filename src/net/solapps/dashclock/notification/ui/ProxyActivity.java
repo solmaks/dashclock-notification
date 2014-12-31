@@ -29,20 +29,18 @@ public class ProxyActivity extends Activity {
                 }
             }
             if (!sent) {
-                try {
-                    startActivity(getLaunchIntent(model));
-                } catch (NameNotFoundException e) {
-                    // launcher intent did not work quite well, there is nothing we can do about it
-                }
+            	startLauncherActivity(model);
             }
         }
         finish();
     }
 
-    private Intent getLaunchIntent(IModel model) throws NameNotFoundException {
+    private void startLauncherActivity(IModel model) {
         Intent intent = getPackageManager().getLaunchIntentForPackage(model.packageName());
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME | Intent.FLAG_ACTIVITY_CLEAR_TASK
-                | Intent.FLAG_ACTIVITY_FORWARD_RESULT);
-        return intent;
+        if (intent != null) {
+	        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME | Intent.FLAG_ACTIVITY_CLEAR_TASK
+	                | Intent.FLAG_ACTIVITY_FORWARD_RESULT);
+	        startActivity(intent);
+        }
     }
 }
